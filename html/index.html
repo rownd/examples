@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <title>Rownd HTML/JS example</title>
+
+    <style>
+        header {
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 5px;
+        }
+
+        nav {
+            line-height: 30px;
+            background-color: #eeeeee;
+            height: 300px;
+            width: 100px;
+            float: left;
+            padding: 5px;
+        }
+
+        section {
+            width: 350px;
+            float: left;
+            padding: 10px;
+        }
+
+        footer {
+            background-color: black;
+            color: white;
+            clear: both;
+            text-align: center;
+            padding: 5px;
+        }
+
+        footer a {
+            color: white;
+        }
+
+        .token {
+            font-family: monospace;
+            background: #ccc;
+            padding: 10px;
+            margin: 5px 0;
+            display: inline-block;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Welcome to this Rownd example!</h1>
+    </header>
+
+    <nav>
+        <a data-rownd-sign-in-trigger data-rownd-authenticated-text="Sign out" data-rownd-sign-out-trigger href="/">Sign in</a><br>
+        <a data-rownd-sign-in-trigger href="/subpage-1">Paris</a><br>
+        <a data-rownd-sign-in-trigger href="/subpage-2">Tokyo</a>
+    </nav>
+
+    <section data-rownd-unauthenticated-content>
+        <h1>Sign in to see cool stuff!</h1>
+        <p>Right now, you're not signed in, so you can't see anything really cool. If you
+            <a href="/" data-rownd-sign-in-trigger>sign in</a>, we'll show you some pretty awesome things.
+        </p>
+    </section>
+
+    <section data-rownd-authenticated-content>
+        <h1>You're signed in!</h1>
+        <h3>Did you know...</h3>
+        <p>London is the capital city of England. It is the most populous city in the United Kingdom,
+            with a metropolitan area of over 13 million inhabitants.</p>
+        <p>Standing on the River Thames, London has been a major settlement for two millennia,
+            its history going back to its founding by the Romans, who named it Londinium.</p>
+
+        <p><b>By the way, here's your Rownd access token:</b> <span class="token" id="access-token" style="word-wrap: break-word;"></span></p>
+    </section>
+
+    <footer>
+        <a href="https://rownd.io">rownd.io</a>
+    </footer>
+
+    <script>
+        !function () {
+            var e = window._rphConfig = window._rphConfig || [];
+            let t = window.localStorage.getItem("rph_base_url_override") || "https://hub.rownd.io"; e.push(["setBaseUrl", t]);
+            var r = document, s = r.createElement("script"), m = r.createElement("script"), a = r.getElementsByTagName("script")[0];
+            s.type = "text/javascript", s.noModule = !0, s.async = !0, s.src = t + "/static/scripts/rph.js", a.parentNode.insertBefore(s, a);
+            m.type = "module", m.async = !0, m.src = t + "/static/scripts/rph.mjs", a.parentNode.insertBefore(m, a);
+        }();
+        _rphConfig.push(["setAppKey", "REPLACE_WITH_YOUR_APP_KEY"]);
+    </script>
+
+    <script>
+        _rphConfig.push(['onLoaded', () => {
+            console.log('rph:', rph);
+            rownd.events.addEventListener('auth', async (e) => {
+                console.log('auth event:', e);
+                document.getElementById('access-token').innerText = e.detail.access_token;
+            });
+        }]);
+    </script>
+
+</body>
+
+</html>
